@@ -18,6 +18,15 @@ public class BookingService {
     private EntityManager entityManager;
 
     public List<Booking> findAllBookings() {
-        entityManager.ntityManager.createQuery("FROM application_user", User.class).getResultList();
+        entityManager.createQuery("FROM application_user", User.class).getResultList();
+    }
+
+    public Response findByID(Long id) {
+        Optional<Booking> foundBooking = entityManager.find(Booking.class, id);
+        if (foundBooking.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return esponse.ok().entity(foundBooking.get()).build();
     }
 }

@@ -36,5 +36,15 @@ public class BookingController {
     public List<Booking> getAllBookings() {
         return bookingService.findAllBookings();
     }
-    
+
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Get a single booking", 
+        description = "Returns a single booking by the given id."
+    )
+    public Response getBooking(@PathParam("id") Long id) {
+       return userService.findByID(id);
+    }
 }
