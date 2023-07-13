@@ -41,7 +41,7 @@ public class BookingService {
             return Response.status(Response.Status.BAD_REQUEST).entity("Booking in the Past").build();
         }
 
-        foundBooking.setStatus(BookingStatus.PENDING);
+        foundBooking.setStatus(BookingStatus.CANCELED);
         return Response.ok().build();
     }
 

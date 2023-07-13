@@ -52,8 +52,8 @@ public class BookingController {
     @Path("/cancel/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(
-        summary = "Get a single booking.", 
-        description = "Returns a single booking by the given id."
+        summary = "Cancel a single booking.", 
+        description = "Cancels a single booking by the given id putting it's status to CANCELED."
     )
     public Response getBooking(@PathParam("id") Long id) {
        return userService.calcelBooking(id);
@@ -63,8 +63,8 @@ public class BookingController {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(
-        summary = "Get a single booking.", 
-        description = "Returns a single booking by the given id."
+        summary = "Deletes a single booking.", 
+        description = "Deletes a single booking by the given id."
     )
     public Response getBooking(@PathParam("id") Long id) {
        return userService.deleteBooking(id);
