@@ -94,9 +94,19 @@ public class UserService {
                     .build();
             }
         }
-        
+
         entityManager.merge(user);
         return Response.ok().build();
     }
 
+    @Transactional
+    public Response deleteUser(Long id) {
+        User foundUser = entityManager.find(User.class, id);
+        if (foundUser == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        entityManager.remove(foundUser);
+        return Response.ok().build();
+    }
 }

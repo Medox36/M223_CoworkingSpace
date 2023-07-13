@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -74,4 +75,14 @@ public class UserController {
         return userService.updateUser(id, user);
     }    
 
+    @DELETE
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Deletes a user ", 
+        description = "Deletes a user by a given id."
+    )
+    public Response deleteUser(@PathParam("id") Long id) {
+        return userService.deleteUser(id);
+    }  
 }
