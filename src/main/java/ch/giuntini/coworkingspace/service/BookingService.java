@@ -1,5 +1,7 @@
 package ch.giuntini.coworkingspace.service;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -14,6 +16,9 @@ import javax.ws.rs.core.Response;
 
 import ch.giuntini.coworkingspace.model.Booking;
 import ch.giuntini.coworkingspace.model.BookingStatus;
+import ch.giuntini.coworkingspace.model.User;
+import ch.giuntini.coworkingspace.util.HexUtil;
+import ch.giuntini.coworkingspace.util.PasswordUtil;
 
 @ApplicationScoped
 public class BookingService {
@@ -38,6 +43,19 @@ public class BookingService {
     public Response createBooking(Booking booking) {
         entityManager.persist(booking);
         return Response.status(Response.Status.CREATED).entity(booking).build();
+    }
+
+    @Transactional
+    public Response updateBooking(Long id, Booking booking) {
+        Booking foundBooking = entityManager.find(Booking.class, id);
+        if (foundBooking == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        } 
+
+        booking.setId(id);
+
+        entityManager.merge(booking);
+        return Response.ok().build();
     }
 
     @Transactional

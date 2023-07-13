@@ -26,7 +26,7 @@ import ch.giuntini.coworkingspace.service.UserService;
 public class UserController {
 
     @Inject
-    UserService userService;
+    private UserService userService;
 
     @POST
     @Path("/register")

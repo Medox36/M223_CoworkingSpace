@@ -95,6 +95,8 @@ public class UserService {
             }
         }
 
+        user.setId(id);
+
         entityManager.merge(user);
         return Response.ok().build();
     }

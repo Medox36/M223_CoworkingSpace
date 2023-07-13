@@ -48,7 +48,7 @@ public class BookingController {
        return bookingService.findByID(id);
     }
 
-    @PUT
+    @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(
@@ -57,6 +57,17 @@ public class BookingController {
     )
     public Response createBooking(Booking booking) {
        return bookingService.createBooking(booking);
+    }
+
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Updates a booking.", 
+        description = "Updates a booking by a given id."
+    )
+    public Response updateBooking(@PathParam("id") Long id, Booking booking) {
+       return bookingService.updateBooking(id, booking);
     }
 
     @PUT
