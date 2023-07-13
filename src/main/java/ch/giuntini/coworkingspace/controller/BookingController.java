@@ -45,7 +45,7 @@ public class BookingController {
         description = "Returns a single booking by the given id."
     )
     public Response getBooking(@PathParam("id") Long id) {
-       return userService.findByID(id);
+       return bookingService.findByID(id);
     }
 
     @PUT
@@ -56,7 +56,7 @@ public class BookingController {
         description = "Accepts a single booking by the given id putting it's status to ACCEPTED."
     )
     public Response acceptBooking(@PathParam("id") Long id) {
-       return userService.acceptBooking(id);
+       return bookingService.acceptBooking(id);
     }
 
     @PUT
@@ -67,7 +67,7 @@ public class BookingController {
         description = "Declines a single booking by the given id putting it's status to DECLINED."
     )
     public Response declineBooking(@PathParam("id") Long id) {
-       return userService.declineBooking(id);
+       return bookingService.declineBooking(id);
     }
 
     @DELETE
@@ -77,8 +77,8 @@ public class BookingController {
         summary = "Cancel a single booking.", 
         description = "Cancels a single booking by the given id putting it's status to CANCELED."
     )
-    public Response getBooking(@PathParam("id") Long id) {
-       return userService.calcelBooking(id);
+    public Response cancelBooking(@PathParam("id") Long id) {
+       return bookingService.calcelBooking(id);
     }
 
     @DELETE
@@ -88,7 +88,7 @@ public class BookingController {
         summary = "Deletes a single booking.", 
         description = "Deletes a single booking by the given id."
     )
-    public Response getBooking(@PathParam("id") Long id) {
-       return userService.deleteBooking(id);
+    public Response deleteBooking(@PathParam("id") Long id) {
+       return bookingService.deleteBooking(id);
     }
 }

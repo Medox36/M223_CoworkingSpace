@@ -1,5 +1,6 @@
 package ch.giuntini.coworkingspace.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -11,6 +12,9 @@ import javax.transaction.Transactional;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
+import ch.giuntini.coworkingspace.model.Booking;
+import ch.giuntini.coworkingspace.model.BookingStatus;
+
 @ApplicationScoped
 public class BookingService {
 
@@ -18,7 +22,7 @@ public class BookingService {
     private EntityManager entityManager;
 
     public List<Booking> findAllBookings() {
-        entityManager.createQuery("FROM application_user", User.class).getResultList();
+        return entityManager.createQuery("FROM application_user", Booking.class).getResultList();
     }
 
     public Response findByID(Long id) {
@@ -27,12 +31,12 @@ public class BookingService {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        return esponse.ok().entity(foundBooking).build();
+        return Response.ok().entity(foundBooking).build();
     }
 
     @Transactional
     public Response acceptBooking(Long id) {
-        Booking foundBooking = entityManager.find(User.class, id);
+        Booking foundBooking = entityManager.find(Booking.class, id);
         if (foundBooking == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -47,22 +51,22 @@ public class BookingService {
     
     @Transactional
     public Response declineBooking(Long id) {
-        Booking foundBooking = entityManager.find(User.class, id);
+        Booking foundBooking = entityManager.find(Booking.class, id);
         if (foundBooking == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        if (foundBooking.getStatus() == BookingStatus.DECLINED) {
+        if (foundBooking.getStatus() == BookingStatus.REJECTED) {
             return Response.status(Response.Status.NOT_MODIFIED).entity("Already declined").build();
         }
 
-        foundBooking.setStatus(BookingStatus.DECLINED);
+        foundBooking.setStatus(BookingStatus.REJECTED);
         return Response.ok().build();
     }
 
     @Transactional
     public Response calcelBooking(Long id) {
-        Booking foundBooking = entityManager.find(User.class, id);
+        Booking foundBooking = entityManager.find(Booking.class, id);
         if (foundBooking == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -77,7 +81,7 @@ public class BookingService {
 
     @Transactional
     public Response deleteBooking(Long id) {
-        Booking foundBooking = entityManager.find(User.class, id);
+        Booking foundBooking = entityManager.find(Booking.class, id);
         if (foundBooking == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
