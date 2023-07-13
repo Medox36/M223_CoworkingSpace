@@ -49,6 +49,17 @@ public class BookingController {
     }
 
     @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Creates a new booking.", 
+        description = "Creates a new booking and returns the created booking."
+    )
+    public Response createBooking(Booking booking) {
+       return bookingService.createBooking(booking);
+    }
+
+    @PUT
     @Path("/booking/accept/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(

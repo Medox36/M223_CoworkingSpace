@@ -35,6 +35,12 @@ public class BookingService {
     }
 
     @Transactional
+    public Response createBooking(Booking booking) {
+        entityManager.persist(booking);
+        return Response.status(Response.Status.CREATED).entity(booking).build();
+    }
+
+    @Transactional
     public Response acceptBooking(Long id) {
         Booking foundBooking = entityManager.find(Booking.class, id);
         if (foundBooking == null) {
