@@ -6,7 +6,9 @@ import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -59,5 +61,17 @@ public class UserController {
     public List<User> getAllUsers() {
        return userService.findAllUsers();
     }
+
+    @PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Updates a user ", 
+        description = "Updates a user by a given id."
+    )
+    public Response updateUser(@PathParam("id") Long id, User user) {
+        return userService.updateUser(id, user);
+    }    
 
 }

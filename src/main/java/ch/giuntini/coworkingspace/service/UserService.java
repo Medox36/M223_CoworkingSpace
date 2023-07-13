@@ -76,4 +76,27 @@ public class UserService {
         return entityManager.createQuery("FROM application_user", User.class).getResultList();
     }
 
+    @Transactional
+    public Response updateUser(Long id, User user) {
+        User foundUser = entityManager.find(User.class, id);
+        if (foundUser == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        } 
+
+        if (user.getPassword() != null ) {
+            try {
+                user.setPassword(PasswordUtil.hash(user.getPassword(), HexUtil.fromHexString(foundUser.getSalt())));
+                user.setSalt(foundUser.getSalt());
+            } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+                e.printStackTrace();
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Can't hash Password")
+                    .build();
+            }
+        }
+        
+        entityManager.merge(user);
+        return Response.ok().build();
+    }
+
 }
