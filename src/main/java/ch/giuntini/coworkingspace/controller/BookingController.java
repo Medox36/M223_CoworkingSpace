@@ -48,6 +48,17 @@ public class BookingController {
        return userService.findByID(id);
     }
 
+    @PUT
+    @Path("/booking/accept/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Accepts a single booking.", 
+        description = "Accepts a single booking by the given id putting it's status to ACCEPTED."
+    )
+    public Response acceptBooking(@PathParam("id") Long id) {
+       return userService.acceptBooking(id);
+    }
+
     @DELETE
     @Path("/cancel/{id}")
     @Produces(MediaType.APPLICATION_JSON)
