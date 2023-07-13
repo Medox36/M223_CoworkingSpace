@@ -49,6 +49,17 @@ public class BookingController {
     }
 
     @DELETE
+    @Path("/cancel/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Get a single booking.", 
+        description = "Returns a single booking by the given id."
+    )
+    public Response getBooking(@PathParam("id") Long id) {
+       return userService.calcelBooking(id);
+    }
+
+    @DELETE
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(

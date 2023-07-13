@@ -31,7 +31,22 @@ public class BookingService {
     }
 
     @Transactional
-    public void deleteBooking(Long id) {
+    public Response calcelBooking(Long id) {
+        Booking foundBooking = entityManager.find(User.class, id);
+        if (foundBooking == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        if (foundBooking.getStartTime().isAfter(LocalDateTime.now())) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Booking in the Past").build();
+        }
+
+        foundBooking.setStatus(BookingStatus.PENDING);
+        return Response.ok().build();
+    }
+
+    @Transactional
+    public Response deleteBooking(Long id) {
         Booking foundBooking = entityManager.find(User.class, id);
         if (foundBooking == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
