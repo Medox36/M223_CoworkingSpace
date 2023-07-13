@@ -22,11 +22,22 @@ public class BookingService {
     }
 
     public Response findByID(Long id) {
-        Optional<Booking> foundBooking = entityManager.find(Booking.class, id);
-        if (foundBooking.isEmpty()) {
+        Booking foundBooking = entityManager.find(Booking.class, id);
+        if (foundBooking == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        return esponse.ok().entity(foundBooking.get()).build();
+        return esponse.ok().entity(foundBooking).build();
+    }
+
+    @Transactional
+    public void deleteBooking(Long id) {
+        Booking foundBooking = entityManager.find(User.class, id);
+        if (foundBooking == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        entityManager.remove(foundBooking);
+        return Response.ok().build();
     }
 }

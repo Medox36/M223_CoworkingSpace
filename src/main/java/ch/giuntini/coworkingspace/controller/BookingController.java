@@ -30,7 +30,7 @@ public class BookingController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(
-        summary = "Get all bookings", 
+        summary = "Get all bookings.", 
         description = "Returns a list of all bookings."
     )
     public List<Booking> getAllBookings() {
@@ -41,10 +41,21 @@ public class BookingController {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(
-        summary = "Get a single booking", 
+        summary = "Get a single booking.", 
         description = "Returns a single booking by the given id."
     )
     public Response getBooking(@PathParam("id") Long id) {
        return userService.findByID(id);
+    }
+
+    @DELETE
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Get a single booking.", 
+        description = "Returns a single booking by the given id."
+    )
+    public Response getBooking(@PathParam("id") Long id) {
+       return userService.deleteBooking(id);
     }
 }
