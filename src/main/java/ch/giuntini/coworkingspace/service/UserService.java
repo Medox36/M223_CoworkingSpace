@@ -2,6 +2,7 @@ package ch.giuntini.coworkingspace.service;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -70,4 +71,9 @@ public class UserService {
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();
     }
+
+    public List<User> findAllUsers() {
+        return entityManager.createQuery("FROM application_user", User.class).getResultList();
+    }
+
 }

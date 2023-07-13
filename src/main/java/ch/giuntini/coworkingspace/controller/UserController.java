@@ -1,7 +1,10 @@
 package ch.giuntini.coworkingspace.controller;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -46,4 +49,15 @@ public class UserController {
     public Response login(Credentials credentials) {
        return userService.loginUser(credentials.email, credentials.password);
     }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Get all users", 
+        description = "Returns a list of all users."
+    )
+    public List<User> getAllUsers() {
+       return userService.findAllUsers();
+    }
+
 }
