@@ -44,6 +44,21 @@ public class BookingService {
         foundBooking.setStatus(BookingStatus.ACCEPTED);
         return Response.ok().build();
     }
+    
+    @Transactional
+    public Response declineBooking(Long id) {
+        Booking foundBooking = entityManager.find(User.class, id);
+        if (foundBooking == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        if (foundBooking.getStatus() == BookingStatus.DECLINED) {
+            return Response.status(Response.Status.NOT_MODIFIED).entity("Already declined").build();
+        }
+
+        foundBooking.setStatus(BookingStatus.DECLINED);
+        return Response.ok().build();
+    }
 
     @Transactional
     public Response calcelBooking(Long id) {

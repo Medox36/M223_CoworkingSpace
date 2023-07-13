@@ -59,6 +59,17 @@ public class BookingController {
        return userService.acceptBooking(id);
     }
 
+    @PUT
+    @Path("/booking/decline/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Declines a single booking.", 
+        description = "Declines a single booking by the given id putting it's status to DECLINED."
+    )
+    public Response declineBooking(@PathParam("id") Long id) {
+       return userService.declineBooking(id);
+    }
+
     @DELETE
     @Path("/cancel/{id}")
     @Produces(MediaType.APPLICATION_JSON)
