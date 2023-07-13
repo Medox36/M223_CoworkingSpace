@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
+import ch.giuntini.coworkingspace.model.Credentials;
 import ch.giuntini.coworkingspace.model.User;
 import ch.giuntini.coworkingspace.service.UserService;
 
@@ -33,4 +34,16 @@ public class UserController {
        return userService.registerUser(user);
     }
     
+    @POST
+    @Path("/login")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Login for users.", 
+        description = "Checks the given credentials and if they match to a user in the database a " + 
+        "JWT is created and sent to the client."
+    )
+    public Response login(Credentials credentials) {
+       return userService.loginUser(credentials.email, credentials.password);
+    }
 }
