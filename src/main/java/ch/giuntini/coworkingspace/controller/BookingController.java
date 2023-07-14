@@ -45,6 +45,18 @@ public class BookingController {
     }
 
     @GET
+    @Path("/my")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Get all bookings owned by the user.", 
+        description = "Returns a list of all bookings owned identified by the JWT."
+    )
+    @RolesAllowed({"User", "Admin"})
+    public List<Booking> getMyBookings(@Context SecurityContext ctx) {
+        return bookingService.findMyBookings(ctx);
+    }
+
+    @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(

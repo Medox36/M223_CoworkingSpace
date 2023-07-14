@@ -27,6 +27,12 @@ public class BookingService {
         return entityManager.createQuery("FROM application_user", Booking.class).getResultList();
     }
 
+    public List<Booking> findMyBookings(SecurityContext ctx) {
+        final Long id = Long.parseLong(ctx.getUserPrincipal().getName());
+
+        return findAllBookings().stream().filter(booking -> booking.getId() == id).toList();
+    }
+
     public Response findByID(Long id) {
         Booking foundBooking = entityManager.find(Booking.class, id);
         if (foundBooking == null) {
