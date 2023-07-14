@@ -24,13 +24,20 @@ public class BookingService {
     private EntityManager entityManager;
 
     public List<Booking> findAllBookings() {
-        return entityManager.createQuery("FROM application_user", Booking.class).getResultList();
+        return entityManager.createQuery("FROM Booking", Booking.class).getResultList();
     }
 
     public List<Booking> findMyBookings(SecurityContext ctx) {
         final Long id = Long.parseLong(ctx.getUserPrincipal().getName());
 
-        return findAllBookings().stream().filter(booking -> booking.getId() == id).toList();
+        List<Booking> bookings = findAllBookings();
+        for (Booking booking : bookings) {
+            if (booking.getBooker().getId() != id) {
+                bookings.remove(booking);
+            }
+        }
+
+        return bookings;
     }
 
     public Response findByID(Long id, SecurityContext ctx) {

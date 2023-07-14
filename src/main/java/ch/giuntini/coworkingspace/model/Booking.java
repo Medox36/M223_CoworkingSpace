@@ -2,6 +2,7 @@ package ch.giuntini.coworkingspace.model;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -28,7 +29,7 @@ public class Booking {
     @Column(nullable = false)
     private LocalDateTime endTime;
 
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "application_user_id", nullable = false)
     private User booker;
 

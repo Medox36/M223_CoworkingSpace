@@ -36,6 +36,9 @@ public class UserService {
 
     @Transactional
     public Response registerUser(CreatingUser creatingUser) {
+        if (findUserByEmail(creatingUser.getEmail()).isEmpty()) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Email already used").build();
+        }
         User user = User.ofCreatingUser(creatingUser);
         String pw = user.getPassword();
         try {
