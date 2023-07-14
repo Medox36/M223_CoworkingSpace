@@ -64,8 +64,8 @@ public class BookingController {
         description = "Returns a single booking by the given id."
     )
     @RolesAllowed({"User", "Admin"})
-    public Response getBooking(@PathParam("id") Long id) {
-       return bookingService.findByID(id);
+    public Response getBooking(@PathParam("id") Long id, @Context SecurityContext ctx) {
+       return bookingService.findByID(id, ctx);
     }
 
     @POST
@@ -94,7 +94,7 @@ public class BookingController {
     }
 
     @PUT
-    @Path("/booking/accept/{id}")
+    @Path("/accept/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(
         summary = "Accepts a single booking.", 
@@ -106,7 +106,7 @@ public class BookingController {
     }
 
     @PUT
-    @Path("/booking/decline/{id}")
+    @Path("/decline/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(
         summary = "Declines a single booking.", 

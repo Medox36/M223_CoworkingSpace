@@ -33,10 +33,15 @@ public class BookingService {
         return findAllBookings().stream().filter(booking -> booking.getId() == id).toList();
     }
 
-    public Response findByID(Long id) {
+    public Response findByID(Long id, SecurityContext ctx) {
         Booking foundBooking = entityManager.find(Booking.class, id);
         if (foundBooking == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        if (foundBooking.getBooker().getId() != Long.parseLong(ctx.getUserPrincipal().getName())) {
+            if (foundBooking.getBooker().getRole() != UserRole.ADMIN) {
+                return Response.status(Response.Status.FORBIDDEN).entity("Not owner of booking").build();
+            }
         }
 
         return Response.ok().entity(foundBooking).build();
@@ -68,6 +73,9 @@ public class BookingService {
             if (foundBooking.getBooker().getRole() != UserRole.ADMIN) {
                 return Response.status(Response.Status.FORBIDDEN).entity("Not owner of booking").build();
             }
+        }
+        if (updatingBooking.getWishFeedback() != null && foundBooking.getBooker().getRole() != UserRole.ADMIN) {
+            return Response.status(Response.Status.FORBIDDEN).entity("Can't add wish feedback as non admin").build();
         }
         Booking booking = fill(foundBooking,
                 updatingBooking, 
