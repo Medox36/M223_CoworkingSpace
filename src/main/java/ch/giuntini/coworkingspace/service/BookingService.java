@@ -77,6 +77,9 @@ public class BookingService {
         if (updatingBooking.getWishFeedback() != null && foundBooking.getBooker().getRole() != UserRole.ADMIN) {
             return Response.status(Response.Status.FORBIDDEN).entity("Can't add wish feedback as non admin").build();
         }
+        if (updatingBooking.getWish() != null && foundBooking.getStatus() != BookingStatus.PENDING) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Can't add wish to non pendign bookings").build();
+        }
         Booking booking = fill(foundBooking,
                 updatingBooking, 
                 entityManager.find(User.class, Long.parseLong(ctx.getUserPrincipal().getName())).getRole());
