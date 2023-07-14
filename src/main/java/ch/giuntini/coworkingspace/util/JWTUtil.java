@@ -12,8 +12,12 @@ public class JWTUtil {
 
     public static String generateJWTForUser(User user) {
         Set<String> groups = new HashSet<String>();
-        groups.add("User");
-        if (user.getRole() == UserRole.ADMIN) {
+
+        UserRole userRole = user.getRole();
+        if (userRole == UserRole.MEMBER || userRole == UserRole.ADMIN) {
+            groups.add("User");
+        }
+        if (userRole == UserRole.ADMIN) {
             groups.add("Admin");
         }
 
