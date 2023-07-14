@@ -82,6 +82,15 @@ public class UserService {
         return entityManager.createQuery("FROM application_user", User.class).getResultList();
     }
 
+    public Response findUserById(Long id) {
+        User foundUser = entityManager.find(User.class, id);
+        if (foundUser == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.ok().entity(foundUser).build();
+    }
+
     @Transactional
     public Response updateUser(Long id, UpdatingUser updatingUser) {
         User foundUser = entityManager.find(User.class, id);

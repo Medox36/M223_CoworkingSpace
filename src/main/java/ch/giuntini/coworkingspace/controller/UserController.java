@@ -71,6 +71,18 @@ public class UserController {
        return userService.findAllUsers();
     }
 
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Get single users", 
+        description = "Returns a user by a given id."
+    )
+    @RolesAllowed({"User", "Admin"})
+    public Response getUserbyId(@PathParam("id") Long id) {
+       return userService.findUserById(id);
+    }
+
     @PUT
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
