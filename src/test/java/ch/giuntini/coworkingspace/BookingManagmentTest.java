@@ -24,7 +24,7 @@ public class BookingManagmentTest {
 
   @Test
   @Order(1)
-  public void getAllUsers() {
+  public void getAllBookings() {
     given()
       .when().get("/booking")
       .then()

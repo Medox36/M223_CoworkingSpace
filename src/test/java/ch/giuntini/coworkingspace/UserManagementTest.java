@@ -23,42 +23,51 @@ import io.quarkus.test.h2.H2DatabaseTestResource;
 public class UserManagementTest {
   @Test
   @Order(1)
-  public void updateUser() {
-    UpdatingUser user = new UpdatingUser();
-    user.setFirstName("Hans");
-
-    given().contentType(ContentType.JSON).body(user)
-      .when().put("/booking/1")
+  public void getAllUsers() {
+    given()
+      .when().get("/booking")
       .then()
         .statusCode(200);
   }
 
   @Test
   @Order(2)
+  public void updateUser() {
+    UpdatingUser user = new UpdatingUser();
+    user.setFirstName("Hans");
+
+    given().contentType(ContentType.JSON).body(user)
+      .when().put("/user/1")
+      .then()
+        .statusCode(200);
+  }
+
+  @Test
+  @Order(3)
   public void updateNonExistentUser() {
     UpdatingUser user = new UpdatingUser();
     user.setFirstName("Peter");
 
     given().contentType(ContentType.JSON).body(user)
-      .when().put("/booking/5475431")
-      .then()
-        .statusCode(404);
-  }
-
-  @Test
-  @Order(3)
-  public void deleteNonExistentUser() {
-    given()
-      .when().delete("/booking/5475431")
+      .when().put("/user/5475431")
       .then()
         .statusCode(404);
   }
 
   @Test
   @Order(4)
+  public void deleteNonExistentUser() {
+    given()
+      .when().delete("/user/5475431")
+      .then()
+        .statusCode(404);
+  }
+
+  @Test
+  @Order(5)
   public void deleteUser() {
     given()
-      .when().delete("/booking/3")
+      .when().delete("/user/3")
       .then()
         .statusCode(404);
   }

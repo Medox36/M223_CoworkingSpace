@@ -66,7 +66,7 @@ public class UserController {
         summary = "Get all users", 
         description = "Returns a list of all users."
     )
-    @RolesAllowed({"Admin"})
+    @RolesAllowed({"User", "Admin"})
     public List<User> getAllUsers() {
        return userService.findAllUsers();
     }
