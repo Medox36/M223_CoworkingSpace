@@ -22,7 +22,7 @@ import io.quarkus.runtime.StartupEvent;
 
 @IfBuildProfile("test")
 @ApplicationScoped
-public class IntegrationTestDataService {
+public class TestDataService {
 
   @Inject
   EntityManager entityManager;
