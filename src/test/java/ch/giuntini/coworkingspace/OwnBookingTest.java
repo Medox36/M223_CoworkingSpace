@@ -11,6 +11,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 
 import ch.giuntini.coworkingspace.model.CreatingBooking;
+import ch.giuntini.coworkingspace.model.UpdatingBooking;
 
 import static io.restassured.RestAssured.given;
 
@@ -74,7 +75,7 @@ public class OwnBookingTest {
   @Order(6)
   public void cancelMyBooking() {
     given()
-      .when().post("/booking/cancel/3")
+      .when().delete("/booking/cancel/3")
       .then()
         .statusCode(200);
   }
@@ -83,7 +84,7 @@ public class OwnBookingTest {
   @Order(7)
   public void cancelNonExistentBooking() {
     given()
-      .when().post("/booking/cancel/564654")
+      .when().delete("/booking/cancel/564654")
       .then()
         .statusCode(404);
   }
@@ -92,7 +93,7 @@ public class OwnBookingTest {
   @Order(8)
   public void cancelBookingOfOtheruser() {
     given()
-      .when().post("/booking/cancel/2")
+      .when().delete("/booking/cancel/2")
       .then()
         .statusCode(403);
   }
@@ -101,7 +102,7 @@ public class OwnBookingTest {
   @Order(9)
   public void cancelBookingInThePast() {
     given()
-      .when().post("/booking/cancel/4")
+      .when().delete("/booking/cancel/4")
       .then()
         .statusCode(400);
   }
@@ -114,7 +115,7 @@ public class OwnBookingTest {
     booking.setEndTime(LocalDateTime.of(2024, 01, 01, 16, 0, 0 ));
 
     given().contentType(ContentType.JSON).body(booking)
-      .when().put("/booking")
+      .when().post("/booking")
       .then()
         .statusCode(200);
   }
@@ -127,7 +128,7 @@ public class OwnBookingTest {
     booking.setEndTime(LocalDateTime.of(2020, 01, 01, 16, 0, 0 ));
 
     given().contentType(ContentType.JSON).body(booking)
-      .when().put("/booking")
+      .when().post("/booking")
       .then()
         .statusCode(400);
   }
@@ -135,14 +136,13 @@ public class OwnBookingTest {
   @Test
   @Order(12)
   public void addWishToBooking() {
-    CreatingBooking booking = new CreatingBooking();
-    booking.setStartTime(LocalDateTime.of(2022, 01, 01, 8, 0, 0 ));
-    booking.setEndTime(LocalDateTime.of(2020, 01, 01, 16, 0, 0 ));
+    UpdatingBooking booking = new UpdatingBooking();
+    booking.setWish("Something I desire");
 
     given().contentType(ContentType.JSON).body(booking)
-      .when().put("/booking")
+      .when().put("/booking/3")
       .then()
-        .statusCode(400);
+        .statusCode(200);
   }
 
   @Test
@@ -152,7 +152,7 @@ public class OwnBookingTest {
     booking.setWish("would like some water-cans");
 
     given().contentType(ContentType.JSON).body(booking)
-      .when().put("/booking")
+      .when().put("/booking/3")
       .then()
         .statusCode(400);
   }

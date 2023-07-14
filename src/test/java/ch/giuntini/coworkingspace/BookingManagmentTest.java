@@ -35,7 +35,7 @@ public class BookingManagmentTest {
   @Order(2)
   public void acceptBooking() {
     given()
-      .when().get("/booking/accept/2")
+      .when().put("/booking/accept/2")
       .then()
         .statusCode(200);
   }
@@ -44,7 +44,7 @@ public class BookingManagmentTest {
   @Order(3)
   public void acceptNonExistentBooking() {
     given()
-      .when().get("/booking/accept/4645646")
+      .when().put("/booking/accept/4645646")
       .then()
         .statusCode(404);
   }
@@ -70,7 +70,7 @@ public class BookingManagmentTest {
     given().contentType(ContentType.JSON).body(booking)
       .when().put("/booking/54872")
       .then()
-        .statusCode(403);
+        .statusCode(404);
   }
 
   @Test
@@ -83,16 +83,16 @@ public class BookingManagmentTest {
     given().contentType(ContentType.JSON).body(booking)
       .when().put("/booking/2")
       .then()
-        .statusCode(404);
+        .statusCode(403);
   }
 
   @Test
   @Order(7)
   public void acceptAlreadyAcceptedBooking() {
     given()
-      .when().get("/booking/accept/2");
+      .when().put("/booking/accept/2");
     given()
-      .when().get("/booking/accept/2")
+      .when().put("/booking/accept/2")
       .then()
         .statusCode(304);
   }
@@ -101,7 +101,7 @@ public class BookingManagmentTest {
   @Order(8)
   public void declineBooking() {
     given()
-      .when().get("/booking/decline/1")
+      .when().put("/booking/decline/1")
       .then()
         .statusCode(200);
   }
@@ -110,7 +110,7 @@ public class BookingManagmentTest {
   @Order(9)
   public void declineNonExistentBooking() {
     given()
-      .when().get("/booking/decline/467756")
+      .when().put("/booking/decline/467756")
       .then()
         .statusCode(404);
   }
@@ -119,9 +119,9 @@ public class BookingManagmentTest {
   @Order(10)
   public void declineAlreadyDeclinedBooking() {
     given()
-      .when().get("/booking/accept/1");
+      .when().put("/booking/accept/1");
     given()
-      .when().get("/booking/accept/1")
+      .when().put("/booking/accept/1")
       .then()
         .statusCode(304);
   }
@@ -141,6 +141,6 @@ public class BookingManagmentTest {
     given()
       .when().delete("/booking/1")
       .then()
-        .statusCode(404);
+        .statusCode(200);
   }
 }
