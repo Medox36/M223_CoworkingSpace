@@ -12,7 +12,6 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
 
 import ch.giuntini.coworkingspace.model.CreatingUser;
 import ch.giuntini.coworkingspace.model.UpdatingUser;
@@ -50,10 +49,17 @@ public class UserService {
                 .build();
         }
         user.setRole(UserRole.MEMBER);
+        if (isFirstUserToRegister()) {
+            user.setRole(UserRole.ADMIN);
+        }
         entityManager.persist(user);
         return Response.status(Response.Status.CREATED)
             .entity(user)
             .build();
+    }
+
+    private boolean isFirstUserToRegister() {
+        return findAllUsers().size() == 0;
     }
 
     public Response loginUser(String email, String password) {
