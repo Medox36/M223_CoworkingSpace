@@ -1,28 +1,21 @@
 package ch.giuntini.coworkingspace.service;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
 import ch.giuntini.coworkingspace.model.Booking;
 import ch.giuntini.coworkingspace.model.BookingStatus;
-import ch.giuntini.coworkingspace.model.User;
-import ch.giuntini.coworkingspace.util.HexUtil;
-import ch.giuntini.coworkingspace.util.PasswordUtil;
+import ch.giuntini.coworkingspace.model.CreatingBooking;
+import ch.giuntini.coworkingspace.model.UpdatingBooking;
 
 @ApplicationScoped
 public class BookingService {
-
+    
     @Inject
     private EntityManager entityManager;
 
@@ -40,23 +33,37 @@ public class BookingService {
     }
 
     @Transactional
-    public Response createBooking(Booking booking) {
+    public Response createBooking(CreatingBooking creatingBooking) {
+        if (!creatingBooking.getStartTime().toLocalDate().isEqual(creatingBooking.getEndTime().toLocalDate())) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Not on the dame date").build();
+        }
+        Booking booking = Booking.ofCreatingBooking(creatingBooking);
+        booking.setStatus(BookingStatus.PENDING);
         entityManager.persist(booking);
         return Response.status(Response.Status.CREATED).entity(booking).build();
     }
 
     @Transactional
-    public Response updateBooking(Long id, Booking booking) {
+    public Response updateBooking(Long id, UpdatingBooking updatingBooking) {
         Booking foundBooking = entityManager.find(Booking.class, id);
         if (foundBooking == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         } 
-
-        booking.setId(id);
+        Booking booking = fill(foundBooking, updatingBooking);
 
         entityManager.merge(booking);
         return Response.ok().build();
     }
+
+    private Booking fill(Booking booking, UpdatingBooking updatingBooking) {
+        if (updatingBooking.getBooker() != null) booking.setBooker(updatingBooking.getBooker());
+        if (updatingBooking.getStartTime() != null) booking.setStartTime(updatingBooking.getStartTime());
+        if (updatingBooking.getEndTime() != null) booking.setEndTime(updatingBooking.getEndTime());
+        if (updatingBooking.getSection() != null) booking.setSection(updatingBooking.getSection());
+        if (updatingBooking.getBooker() != null) booking.setBooker(updatingBooking.getBooker());
+        return booking;
+    }
+
 
     @Transactional
     public Response acceptBooking(Long id) {

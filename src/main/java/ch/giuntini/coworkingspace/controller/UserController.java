@@ -3,6 +3,7 @@ package ch.giuntini.coworkingspace.controller;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -17,7 +18,9 @@ import javax.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
+import ch.giuntini.coworkingspace.model.CreatingUser;
 import ch.giuntini.coworkingspace.model.Credentials;
+import ch.giuntini.coworkingspace.model.UpdatingUser;
 import ch.giuntini.coworkingspace.model.User;
 import ch.giuntini.coworkingspace.service.UserService;
 
@@ -36,7 +39,7 @@ public class UserController {
         summary = "Register/(create) a new user.", 
         description = "Registers a new user and returns status codes respectively."
     )
-    public Response create(User user) {
+    public Response create(@Valid CreatingUser user) {
        return userService.registerUser(user);
     }
     
@@ -71,8 +74,8 @@ public class UserController {
         summary = "Updates a user ", 
         description = "Updates a user by a given id."
     )
-    public Response updateUser(@PathParam("id") Long id, User user) {
-        return userService.updateUser(id, user);
+    public Response updateUser(@PathParam("id") Long id, @Valid UpdatingUser updatingUser) {
+        return userService.updateUser(id, updatingUser);
     }    
 
     @DELETE

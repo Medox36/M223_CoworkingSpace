@@ -89,4 +89,13 @@ public class Booking {
     public void setSection(Section section) {
         this.section = section;
     }
+
+    public static Booking ofCreatingBooking(CreatingBooking creatingBooking) {
+        Booking booking = new Booking();
+        booking.setStartTime(booking.getStartTime());
+        booking.setEndTime(creatingBooking.getEndTime());
+        booking.setBooker(creatingBooking.getBooker());
+        booking.setSection(creatingBooking.getSection());
+        return booking;
+    }
 }

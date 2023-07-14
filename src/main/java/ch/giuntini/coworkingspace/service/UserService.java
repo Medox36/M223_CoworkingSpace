@@ -13,7 +13,11 @@ import javax.transaction.Transactional;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
+import ch.giuntini.coworkingspace.model.CreatingUser;
+import ch.giuntini.coworkingspace.model.UpdatingUser;
+import ch.giuntini.coworkingspace.model.CreatingUser;
 import ch.giuntini.coworkingspace.model.User;
+import ch.giuntini.coworkingspace.model.UserRole;
 import ch.giuntini.coworkingspace.util.HexUtil;
 import ch.giuntini.coworkingspace.util.JWTUtil;
 import ch.giuntini.coworkingspace.util.PasswordUtil;
@@ -25,14 +29,15 @@ public class UserService {
 
     public Optional<User> findUserByEmail(String email) {
         return entityManager
-                .createNamedQuery("ApplicationUser.findByEmail", User.class)
+                .createNamedQuery("User.findByEmail", User.class)
                 .setParameter("email", email)
                 .getResultStream()
                 .findFirst();
     }
 
     @Transactional
-    public Response registerUser(User user) {
+    public Response registerUser(CreatingUser creatingUser) {
+        User user = User.ofCreatingUser(creatingUser);
         String pw = user.getPassword();
         try {
             String[] ps = PasswordUtil.hash(pw);
@@ -44,6 +49,7 @@ public class UserService {
                 .entity("Can't hash Password")
                 .build();
         }
+        user.setRole(UserRole.MEMBER);
         entityManager.persist(user);
         return Response.status(Response.Status.CREATED)
             .entity(user)
@@ -77,16 +83,15 @@ public class UserService {
     }
 
     @Transactional
-    public Response updateUser(Long id, User user) {
+    public Response updateUser(Long id, UpdatingUser updatingUser) {
         User foundUser = entityManager.find(User.class, id);
         if (foundUser == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         } 
 
-        if (user.getPassword() != null ) {
+        if (updatingUser.getPassword() != null ) {
             try {
-                user.setPassword(PasswordUtil.hash(user.getPassword(), HexUtil.fromHexString(foundUser.getSalt())));
-                user.setSalt(foundUser.getSalt());
+                updatingUser.setPassword(PasswordUtil.hash(updatingUser.getPassword(), HexUtil.fromHexString(foundUser.getSalt())));
             } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
                 e.printStackTrace();
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -95,10 +100,18 @@ public class UserService {
             }
         }
 
-        user.setId(id);
+        foundUser = fill(foundUser, updatingUser);
 
-        entityManager.merge(user);
+        entityManager.merge(foundUser);
         return Response.ok().build();
+    }
+
+    private User fill(User user, UpdatingUser updatingUser) {
+        if (updatingUser.getEmail() != null) user.setEmail(updatingUser.getEmail());
+        if (updatingUser.getFirstName() != null) user.setFirstName(updatingUser.getFirstName());
+        if (updatingUser.getLastName() != null) user.setLastName(updatingUser.getLastName());
+        if (updatingUser.getPassword() != null) user.setPassword(updatingUser.getPassword());
+        return user;
     }
 
     @Transactional

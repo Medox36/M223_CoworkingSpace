@@ -3,6 +3,7 @@ package ch.giuntini.coworkingspace.controller;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -18,6 +19,8 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import ch.giuntini.coworkingspace.model.Booking;
+import ch.giuntini.coworkingspace.model.CreatingBooking;
+import ch.giuntini.coworkingspace.model.UpdatingBooking;
 import ch.giuntini.coworkingspace.service.BookingService;
 
 @Path("/booking")
@@ -55,8 +58,8 @@ public class BookingController {
         summary = "Creates a new booking.", 
         description = "Creates a new booking and returns the created booking."
     )
-    public Response createBooking(Booking booking) {
-       return bookingService.createBooking(booking);
+    public Response createBooking(@Valid CreatingBooking creatingBooking) {
+       return bookingService.createBooking(creatingBooking);
     }
 
     @PUT
@@ -66,8 +69,8 @@ public class BookingController {
         summary = "Updates a booking.", 
         description = "Updates a booking by a given id."
     )
-    public Response updateBooking(@PathParam("id") Long id, Booking booking) {
-       return bookingService.updateBooking(id, booking);
+    public Response updateBooking(@PathParam("id") Long id, @Valid UpdatingBooking updatingBooking) {
+       return bookingService.updateBooking(id, updatingBooking);
     }
 
     @PUT

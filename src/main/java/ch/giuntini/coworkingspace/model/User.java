@@ -100,4 +100,13 @@ public class User {
     public void setRole(UserRole role) {
         this.role = role;
     }    
+
+    public static User ofCreatingUser(CreatingUser creatingUser) {
+        User user = new User();
+        user.setEmail(creatingUser.getEmail());
+        user.setFirstName(creatingUser.getFirstName());
+        user.setLastName(creatingUser.getLastName());
+        user.setPassword(creatingUser.getPassword());
+        return user;
+    }
 }
