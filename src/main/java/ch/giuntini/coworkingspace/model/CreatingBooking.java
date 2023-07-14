@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
+
 public class CreatingBooking {
 
     @NotNull
@@ -15,10 +17,10 @@ public class CreatingBooking {
     @Future
     private LocalDateTime endTime;
 
-    @NotNull
-    private User booker;
-
     private Section section;
+
+    @Length(max = 8191)
+    private String wish;
 
     public LocalDateTime getStartTime() {
         return this.startTime;
@@ -36,19 +38,19 @@ public class CreatingBooking {
         this.endTime = endTime;
     }
 
-    public User getBooker() {
-        return this.booker;
-    }
-
-    public void setBooker(User booker) {
-        this.booker = booker;
-    }
-
     public Section getSection() {
         return this.section;
     }
 
     public void setSection(Section section) {
         this.section = section;
+    }
+
+    public String getWish() {
+        return wish;
+    }
+
+    public void setWish(String wish) {
+        this.wish = wish;
     }
 }

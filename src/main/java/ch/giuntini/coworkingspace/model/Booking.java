@@ -24,6 +24,7 @@ public class Booking {
 
     @Column(nullable = false)
     private LocalDateTime startTime;
+
     @Column(nullable = false)
     private LocalDateTime endTime;
 
@@ -41,6 +42,11 @@ public class Booking {
     @Enumerated(EnumType.STRING)
     private Section section;
 
+    @Column(length = 8191)
+    private String wish;
+
+    @Column(length = 8191)
+    private String wishFeedback;
 
     public Long getId() {
         return this.id;
@@ -90,12 +96,28 @@ public class Booking {
         this.section = section;
     }
 
+    public String getWish() {
+        return wish;
+    }
+
+    public void setWish(String wish) {
+        this.wish = wish;
+    }
+
+    public String getWishFeedback() {
+        return wishFeedback;
+    }
+
+    public void setWishFeedback(String wishFeedback) {
+        this.wishFeedback = wishFeedback;
+    }
+
     public static Booking ofCreatingBooking(CreatingBooking creatingBooking) {
         Booking booking = new Booking();
         booking.setStartTime(booking.getStartTime());
         booking.setEndTime(creatingBooking.getEndTime());
-        booking.setBooker(creatingBooking.getBooker());
         booking.setSection(creatingBooking.getSection());
+        booking.setWish(creatingBooking.getWish());
         return booking;
     }
 }

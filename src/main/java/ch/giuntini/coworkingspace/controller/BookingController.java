@@ -13,8 +13,10 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
@@ -62,8 +64,8 @@ public class BookingController {
         description = "Creates a new booking and returns the created booking."
     )
     @RolesAllowed({"User", "Admin"})
-    public Response createBooking(@Valid CreatingBooking creatingBooking) {
-       return bookingService.createBooking(creatingBooking);
+    public Response createBooking(@Valid CreatingBooking creatingBooking, @Context SecurityContext ctx) {
+       return bookingService.createBooking(creatingBooking, ctx);
     }
 
     @PUT
@@ -74,8 +76,8 @@ public class BookingController {
         description = "Updates a booking by a given id."
     )
     @RolesAllowed({"User", "Admin"})
-    public Response updateBooking(@PathParam("id") Long id, @Valid UpdatingBooking updatingBooking) {
-       return bookingService.updateBooking(id, updatingBooking);
+    public Response updateBooking(@PathParam("id") Long id, @Valid UpdatingBooking updatingBooking, @Context SecurityContext ctx) {
+       return bookingService.updateBooking(id, updatingBooking, ctx);
     }
 
     @PUT
@@ -110,8 +112,8 @@ public class BookingController {
         description = "Cancels a single booking by the given id putting it's status to CANCELED."
     )
     @RolesAllowed({"User", "Admin"})
-    public Response cancelBooking(@PathParam("id") Long id) {
-       return bookingService.calcelBooking(id);
+    public Response cancelBooking(@PathParam("id") Long id, @Context SecurityContext ctx) {
+       return bookingService.calcelBooking(id, ctx);
     }
 
     @DELETE

@@ -12,10 +12,10 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 
 import ch.giuntini.coworkingspace.model.CreatingUser;
 import ch.giuntini.coworkingspace.model.UpdatingUser;
-import ch.giuntini.coworkingspace.model.CreatingUser;
 import ch.giuntini.coworkingspace.model.User;
 import ch.giuntini.coworkingspace.model.UserRole;
 import ch.giuntini.coworkingspace.util.HexUtil;

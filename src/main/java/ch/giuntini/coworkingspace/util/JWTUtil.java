@@ -22,7 +22,7 @@ public class JWTUtil {
         }
 
         return Jwt.issuer("https://jwtissuer.zli.example.com/")
-                .upn(user.getEmail())
+                .upn(String.valueOf(user.getId()))
                 .groups(groups)
                 .expiresIn(Duration.ofHours(24))
                 .sign();
