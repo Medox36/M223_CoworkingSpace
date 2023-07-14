@@ -2,6 +2,7 @@ package ch.giuntini.coworkingspace.controller;
 
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -36,6 +37,7 @@ public class BookingController {
         summary = "Get all bookings.", 
         description = "Returns a list of all bookings."
     )
+    @RolesAllowed({"Admin"})
     public List<Booking> getAllBookings() {
         return bookingService.findAllBookings();
     }
@@ -47,6 +49,7 @@ public class BookingController {
         summary = "Get a single booking.", 
         description = "Returns a single booking by the given id."
     )
+    @RolesAllowed({"User", "Admin"})
     public Response getBooking(@PathParam("id") Long id) {
        return bookingService.findByID(id);
     }
@@ -58,6 +61,7 @@ public class BookingController {
         summary = "Creates a new booking.", 
         description = "Creates a new booking and returns the created booking."
     )
+    @RolesAllowed({"User", "Admin"})
     public Response createBooking(@Valid CreatingBooking creatingBooking) {
        return bookingService.createBooking(creatingBooking);
     }
@@ -69,6 +73,7 @@ public class BookingController {
         summary = "Updates a booking.", 
         description = "Updates a booking by a given id."
     )
+    @RolesAllowed({"User", "Admin"})
     public Response updateBooking(@PathParam("id") Long id, @Valid UpdatingBooking updatingBooking) {
        return bookingService.updateBooking(id, updatingBooking);
     }
@@ -80,6 +85,7 @@ public class BookingController {
         summary = "Accepts a single booking.", 
         description = "Accepts a single booking by the given id putting it's status to ACCEPTED."
     )
+    @RolesAllowed({"Admin"})
     public Response acceptBooking(@PathParam("id") Long id) {
        return bookingService.acceptBooking(id);
     }
@@ -91,6 +97,7 @@ public class BookingController {
         summary = "Declines a single booking.", 
         description = "Declines a single booking by the given id putting it's status to DECLINED."
     )
+    @RolesAllowed({"Admin"})
     public Response declineBooking(@PathParam("id") Long id) {
        return bookingService.declineBooking(id);
     }
@@ -102,6 +109,7 @@ public class BookingController {
         summary = "Cancel a single booking.", 
         description = "Cancels a single booking by the given id putting it's status to CANCELED."
     )
+    @RolesAllowed({"User", "Admin"})
     public Response cancelBooking(@PathParam("id") Long id) {
        return bookingService.calcelBooking(id);
     }
@@ -113,6 +121,7 @@ public class BookingController {
         summary = "Deletes a single booking.", 
         description = "Deletes a single booking by the given id."
     )
+    @RolesAllowed({"Admin"})
     public Response deleteBooking(@PathParam("id") Long id) {
        return bookingService.deleteBooking(id);
     }

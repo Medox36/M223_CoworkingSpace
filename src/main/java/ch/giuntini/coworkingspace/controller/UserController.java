@@ -2,6 +2,8 @@ package ch.giuntini.coworkingspace.controller;
 
 import java.util.List;
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -39,6 +41,7 @@ public class UserController {
         summary = "Register/(create) a new user.", 
         description = "Registers a new user and returns status codes respectively."
     )
+    @PermitAll
     public Response create(@Valid CreatingUser user) {
        return userService.registerUser(user);
     }
@@ -52,6 +55,7 @@ public class UserController {
         description = "Checks the given credentials and if they match to a user in the database a " + 
         "JWT is created and sent to the client."
     )
+    @PermitAll
     public Response login(Credentials credentials) {
        return userService.loginUser(credentials.email, credentials.password);
     }
@@ -62,6 +66,7 @@ public class UserController {
         summary = "Get all users", 
         description = "Returns a list of all users."
     )
+    @RolesAllowed({"Admin"})
     public List<User> getAllUsers() {
        return userService.findAllUsers();
     }
@@ -74,6 +79,7 @@ public class UserController {
         summary = "Updates a user ", 
         description = "Updates a user by a given id."
     )
+    @RolesAllowed({"Admin"})
     public Response updateUser(@PathParam("id") Long id, @Valid UpdatingUser updatingUser) {
         return userService.updateUser(id, updatingUser);
     }    
@@ -85,6 +91,7 @@ public class UserController {
         summary = "Deletes a user ", 
         description = "Deletes a user by a given id."
     )
+    @RolesAllowed({"Admin"})
     public Response deleteUser(@PathParam("id") Long id) {
         return userService.deleteUser(id);
     }  
